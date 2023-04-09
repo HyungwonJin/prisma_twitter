@@ -3,20 +3,32 @@ import Input from "../components/input";
 import Button from "../components/button";
 import Link from "next/link";
 import useMutation from "../lib/client/useMutation";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 interface EnterForm {
   userId: string;
   password: string;
 }
 
+interface MutationResult {
+  ok: boolean;
+}
+
 export default function CreateAccount() {
-  const [create, { loading, data, error }] = useMutation(
+  const [create, { loading, data, error }] = useMutation<MutationResult>(
     "/api/users/create-account"
   );
   const { register, handleSubmit } = useForm<EnterForm>();
   const onValid = (inputData: EnterForm) => {
     create(inputData);
   };
+  const router = useRouter();
+  useEffect(() => {
+    if (data?.ok) {
+      router.push("/log-in");
+    }
+  }, [data, router]);
   return (
     <div>
       <form onSubmit={handleSubmit(onValid)}>
@@ -29,8 +41,8 @@ export default function CreateAccount() {
         />
         <Input
           register={register("password", { required: true })}
-          label="Pass Word"
-          type="text"
+          label="Password"
+          type="password"
           required
           name="password"
         />
