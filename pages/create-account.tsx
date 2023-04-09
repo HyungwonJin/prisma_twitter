@@ -2,16 +2,28 @@ import { useForm } from "react-hook-form";
 import Input from "../components/input";
 import Button from "../components/button";
 import Link from "next/link";
+import useMutation from "../lib/client/useMutation";
+
+interface EnterForm {
+  userId: string;
+  password: string;
+}
 
 export default function CreateAccount() {
-  const { register } = useForm();
+  const [create, { loading, data, error }] = useMutation(
+    "/api/users/create-account"
+  );
+  const { register, handleSubmit } = useForm<EnterForm>();
+  const onValid = (inputData: EnterForm) => {
+    create(inputData);
+  };
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit(onValid)}>
         <Input
           register={register("userId", { required: true })}
           required
-          name="userName"
+          name="userId"
           label="User Name"
           type="text"
         />
@@ -22,7 +34,7 @@ export default function CreateAccount() {
           required
           name="password"
         />
-        <Button text="Create Account" />
+        <Button text={loading ? "Loading..." : "Create Account"} />
       </form>
       <Link href="/log-in">
         <span>이미 회원이신가요?&rarr;</span>
