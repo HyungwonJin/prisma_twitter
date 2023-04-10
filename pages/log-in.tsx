@@ -16,6 +16,7 @@ interface MutationResult {
 }
 
 export default function Login() {
+  console.log(process.env.COOKIE_PASSWORD);
   const { register, handleSubmit } = useForm<LoginType>();
   const [login, { loading, data, error }] =
     useMutation<MutationResult>("/api/users/log-in");

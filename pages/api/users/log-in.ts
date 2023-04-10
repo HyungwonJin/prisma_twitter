@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import withHandler from "../../../lib/server/withHandler";
 import db from "../../../lib/db";
+import { withApiSession } from "../../../lib/server/withSession";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { userId, password } = req.body;
@@ -12,10 +13,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log(foundUser);
   if (!foundUser) return res.status(404).end();
   if (password === foundUser?.password) {
+    req.session.user = {
+      id: foundUser.id,
+    };
+    await req.session.save();
     return res.json({ ok: true });
   } else if (password !== foundUser?.password) {
     return res.status(404).end();
   }
 }
 
-export default withHandler("POST", handler);
+export default withApiSession(withHandler("POST", handler));
+// export default withHandler("POST", handler);
