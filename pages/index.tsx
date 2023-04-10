@@ -33,7 +33,7 @@ const Home = () => {
           </button>
         </div>
       ))}
-      <FloatingButton href="/">
+      <FloatingButton href="/twits/upload">
         <svg
           className="h-6 w-6"
           xmlns="http://www.w3.org/2000/svg"
