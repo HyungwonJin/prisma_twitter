@@ -18,6 +18,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Twit      Twit[]
+  Fav       Fav[]
 }
 
 model Twit {
@@ -28,4 +29,15 @@ model Twit {
   userId      Int
   title       String
   description String
+  Fav         Fav[]
+}
+
+model Fav {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  twit      Twit     @relation(fields: [twitId], references: [id])
+  twitId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

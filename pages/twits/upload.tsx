@@ -5,6 +5,7 @@ import Button from "../../components/button";
 import useMutation from "../../lib/client/useMutation";
 import { useEffect } from "react";
 import { Twit } from "@prisma/client";
+import { useRouter } from "next/router";
 
 interface UploadTwitForm {
   title: string;
@@ -23,9 +24,10 @@ export default function upload() {
   const onValid = (data: UploadTwitForm) => {
     uploadTwit(data);
   };
+  const router = useRouter();
   useEffect(() => {
     if (twitData?.ok) {
-      console.log(twitData);
+      router.replace("/");
     }
   }, [twitData]);
   return (
