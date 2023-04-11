@@ -4,27 +4,38 @@ import { withApiSession } from "../../../lib/server/withSession";
 import db from "../../../lib/db";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const {
-    body: { title, description },
-    session: { user },
-  } = req;
-  console.log(title, description, user);
-  const twit = await db.twit.create({
-    data: {
-      title,
-      description,
-      user: {
-        connect: {
-          id: user?.id,
+  if (req.method === "GET") {
+    const twit = await db.twit.findMany({});
+    res.json({
+      ok: true,
+      twit,
+    });
+  }
+  if (req.method === "POST") {
+    const {
+      body: { title, description },
+      session: { user },
+    } = req;
+    console.log(title, description, user);
+    const twit = await db.twit.create({
+      data: {
+        title,
+        description,
+        user: {
+          connect: {
+            id: user?.id,
+          },
         },
       },
-    },
-  });
-  console.log(twit);
-  res.json({
-    ok: true,
-    twit,
-  });
+    });
+    console.log(twit);
+    res.json({
+      ok: true,
+      twit,
+    });
+  }
 }
 
-export default withApiSession(withHandler("POST", handler));
+export default withApiSession(
+  withHandler({ methods: ["POST", "GET"], handler })
+);

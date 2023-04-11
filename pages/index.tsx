@@ -1,19 +1,27 @@
 import React from "react";
 import FloatingButton from "../components/floating-button";
 import useUser from "../lib/client/useUser";
+import useSWR from "swr";
+import { Twit } from "@prisma/client";
+
+interface TwitResponse {
+  ok: boolean;
+  twit: Twit[];
+}
 
 const Home = () => {
   const { user, isLoading } = useUser();
-  console.log(user);
+  const { data } = useSWR<TwitResponse>("/api/twits");
+  console.log("data:", data);
   return (
     <div>
-      {[1, 2, 3, 4, 5, 6, 7].map((card, i) => (
+      {data?.twit?.map((card) => (
         <div>
           <div>
             <div></div>
-            <span>Name</span>
+            <span>{card.title}</span>
           </div>
-          <p>안녕하십니까?</p>
+          <p>{card.description}</p>
           <button>
             <svg
               className="h-6 w-6 "
