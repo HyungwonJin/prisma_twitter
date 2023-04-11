@@ -3,6 +3,7 @@ import FloatingButton from "../components/floating-button";
 import useUser from "../lib/client/useUser";
 import useSWR from "swr";
 import { Twit } from "@prisma/client";
+import Link from "next/link";
 
 interface TwitResponse {
   ok: boolean;
@@ -17,10 +18,12 @@ const Home = () => {
     <div>
       {data?.twit?.map((card) => (
         <div>
-          <div>
-            <div></div>
-            <span>{card.title}</span>
-          </div>
+          <Link href={`/twits/${card.id}`}>
+            <div>
+              <div></div>
+              <span>{card.title}</span>
+            </div>
+          </Link>
           <p>{card.description}</p>
           <button>
             <svg
