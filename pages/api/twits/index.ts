@@ -5,7 +5,11 @@ import db from "../../../lib/db";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
-    const twit = await db.twit.findMany({});
+    const twit = await db.twit.findMany({
+      include: {
+        Fav: true,
+      },
+    });
     res.json({
       ok: true,
       twit,
