@@ -1,10 +1,9 @@
-import React, { MouseEventHandler } from "react";
+import React from "react";
 import FloatingButton from "../components/floating-button";
 import useUser from "../lib/client/useUser";
 import useSWR from "swr";
 import { Fav, Twit } from "@prisma/client";
 import Link from "next/link";
-import useMutation from "../lib/client/useMutation";
 
 interface TwitWithFav extends Twit {
   Fav: Fav[];

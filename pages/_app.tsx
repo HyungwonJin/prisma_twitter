@@ -8,7 +8,9 @@ export default function App({ Component, pageProps }: any) {
         fetcher: (url: string) => fetch(url).then((response) => response.json())
       }}
     >
-      <Component {...pageProps} />
+      <div className="w-full max-w-lg mx-auto">
+        <Component {...pageProps} />
+      </div>
     </SWRConfig>
   );
 }
